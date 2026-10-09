@@ -21,6 +21,8 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
+    html { scroll-behavior: smooth; }
+
     body {
       background-color: var(--bg-main);
       color: var(--text-dark);
@@ -29,21 +31,26 @@
       overflow-x: hidden;
     }
 
-    /* Animación de entrada suave */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* BARRA SUPERIOR DE ANUNCIOS */
+    .top-bar {
+      background-color: var(--primary);
+      color: #FFFFFF;
+      text-align: center;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
     }
 
-    /* Encabezado */
+    /* ENCABEZADO Y NAVEGACIÓN COMPLETA */
     header {
-      background-color: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
+      background-color: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
       z-index: 100;
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     }
 
     .header-container {
@@ -53,6 +60,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .logo-link {
@@ -63,10 +72,9 @@
       color: var(--text-dark);
     }
 
-    /* Logo vectorial provisional o imagen real */
     .logo-img {
-      width: 45px;
-      height: 45px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--accent-pink);
@@ -74,72 +82,79 @@
     }
 
     .logo-link:hover .logo-img {
-      transform: rotate(10deg) scale(1.05);
+      transform: rotate(8deg) scale(1.05);
     }
 
     .brand-name {
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--primary);
+    }
+
+    nav {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
     }
 
     nav a {
       color: var(--text-muted);
       text-decoration: none;
-      margin-left: 1.5rem;
       font-weight: 500;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       transition: color 0.2s ease;
     }
 
     nav a:hover { color: var(--primary); }
 
-    /* Carrusel Infinito Deslizable con Difuminado */
-    .carousel-section {
+    /* CARRUSEL INFINITO CON DEGRADADO */
+    .hero-carousel-wrapper {
       position: relative;
       width: 100%;
-      height: 280px;
+      height: 380px;
       overflow: hidden;
-      background-color: var(--secondary);
-      border-bottom: 1px solid var(--border-color);
+      background-color: #2C221E;
     }
 
-    /* Difuminado a los lados */
-    .carousel-section::before,
-    .carousel-section::after {
-      content: "";
+    .hero-overlay {
       position: absolute;
-      top: 0;
-      width: 120px;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(180deg, rgba(44, 34, 30, 0.4) 0%, rgba(44, 34, 30, 0.75) 100%);
       z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #FFFFFF;
+      padding: 0 1.5rem;
       pointer-events: none;
     }
 
-    .carousel-section::before {
-      left: 0;
-      background: linear-gradient(to right, var(--bg-main) 0%, transparent 100%);
+    .hero-overlay h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
-    .carousel-section::after {
-      right: 0;
-      background: linear-gradient(to left, var(--bg-main) 0%, transparent 100%);
+    .hero-overlay p {
+      font-size: 1.15rem;
+      max-width: 650px;
+      color: #FDF4EC;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
     .carousel-track {
       display: flex;
-      width: calc(300px * 10);
-      animation: scroll 25s linear infinite;
-    }
-
-    .carousel-track:hover {
-      animation-play-state: paused;
+      width: calc(400px * 10);
+      animation: infiniteScroll 30s linear infinite;
     }
 
     .carousel-slide {
-      width: 300px;
-      height: 280px;
-      padding: 10px;
+      width: 400px;
+      height: 380px;
       flex-shrink: 0;
     }
 
@@ -147,33 +162,102 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease;
     }
 
-    .carousel-slide img:hover {
-      transform: scale(1.03);
-    }
-
-    @keyframes scroll {
+    @keyframes infiniteScroll {
       0% { transform: translateX(0); }
-      100% { transform: translateX(calc(-300px * 5)); }
+      100% { transform: translateX(calc(-400px * 5)); }
     }
 
-    /* Principal */
+    /* ESTILO PARA LAS FRASES DESTACADAS */
+    .quote-banner {
+      background-color: var(--secondary);
+      border-top: 1px dashed var(--accent-pink);
+      border-bottom: 1px dashed var(--accent-pink);
+      padding: 2.2rem 1.5rem;
+      text-align: center;
+      margin: 3.5rem 0;
+    }
+
+    .quote-banner blockquote {
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--primary);
+      font-weight: 500;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .quote-banner span {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* CONTENIDO PRINCIPAL */
     main {
       max-width: 1100px;
       margin: 0 auto;
       padding: 3rem 1.5rem;
-      animation: fadeIn 0.8s ease-out;
     }
 
-    .category-title {
-      font-size: 1.6rem;
+    .section-block {
+      margin-bottom: 4rem;
+      scroll-margin-top: 100px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
       color: var(--primary);
-      margin: 3rem 0 1.5rem;
-      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* HISTORIA */
+    .history-card {
+      background: var(--secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .history-text p {
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+      font-size: 0.98rem;
+    }
+
+    .history-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid var(--accent-pink);
+    }
+
+    /* CATÁLOGO */
+    .category-title {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin: 2rem 0 1.2rem;
+      padding-bottom: 0.4rem;
       border-bottom: 2px solid var(--accent-pink);
     }
 
@@ -204,9 +288,7 @@
       transition: transform 0.5s ease;
     }
 
-    .product-card:hover .product-img {
-      transform: scale(1.05);
-    }
+    .product-card:hover .product-img { transform: scale(1.05); }
 
     .product-details { padding: 1.25rem; }
     .product-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
@@ -239,13 +321,43 @@
       transform: scale(1.05);
     }
 
-    /* Sección de Contacto */
+    /* UBICACIÓN */
+    .location-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    }
+
+    .location-info h3 {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .location-info p {
+      margin-bottom: 0.8rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .map-frame {
+      width: 100%;
+      height: 280px;
+      border: 0;
+      border-radius: 12px;
+    }
+
+    /* CONTACTO */
     .contact-container {
       background-color: var(--secondary);
       border: 1px solid var(--border-color);
       border-radius: 16px;
       padding: 3rem 1.5rem;
-      margin-top: 4rem;
       text-align: center;
     }
 
@@ -279,7 +391,7 @@
     .btn-instagram { background-color: #E1306C; }
     .btn-facebook { background-color: #1877F2; }
 
-    /* Pie de página */
+    /* PIE DE PÁGINA */
     footer {
       background-color: #FFFFFF;
       border-top: 1px solid var(--border-color);
@@ -309,7 +421,7 @@
 
     .legal-links a:hover { text-decoration: underline; }
 
-    /* Modal de Selección de Pedido */
+    /* MODAL DE PEDIDO */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -322,7 +434,7 @@
       padding: 1.5rem;
     }
 
-    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
+    .modal-overlay.active { display: flex; }
 
     .modal-card {
       background: #FFFFFF;
@@ -369,11 +481,15 @@
 </head>
 <body>
 
-  <!-- ENCABEZADO Y LOGO -->
+  <!-- BARRA DE ANUNCIOS -->
+  <div class="top-bar">
+    ✨ Pedidos especiales con 24 hrs de anticipación | Envíos a domicilio en toda la ciudad
+  </div>
+
+  <!-- ENCABEZADO Y NAVEGACIÓN -->
   <header>
     <div class="header-container">
       <a href="#" class="logo-link">
-        <!-- 📌 ESPACIO PARA TU LOGO REAL: Reemplaza este SVG por: <img src="tu-logo.png" class="logo-img"> -->
         <svg class="logo-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="50" cy="50" r="48" fill="#FDF4EC" stroke="#D97757" stroke-width="4"/>
           <path d="M30 65 C30 50, 70 50, 70 65 Z" fill="#D97757"/>
@@ -382,43 +498,77 @@
         </svg>
         <span class="brand-name">Delicias de las Madres</span>
       </a>
+      
       <nav>
-        <a href="#catalogo">Catálogo</a>
+        <a href="#historia">Quiénes Somos</a>
+        <a href="#catalogo">Visita nuestro Catálogo</a>
+        <a href="#encuentranos">Encuéntranos</a>
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
   </header>
 
-  <!-- CARRUSEL INFINITO DE FOTOS -->
-  <section class="carousel-section">
+  <!-- CARRUSEL INFINITO CON DEGRADADO -->
+  <section class="hero-carousel-wrapper">
+    <div class="hero-overlay">
+      <h1>Tradición, Sabor & Amor</h1>
+      <p>Repostería artesanal recién horneada cada mañana con ingredientes 100% naturales.</p>
+    </div>
+
     <div class="carousel-track">
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80" alt="Pastel Chocolate"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=500&auto=format&fit=crop&q=80" alt="Tartaleta"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop&q=80" alt="Galletas"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=500&auto=format&fit=crop&q=80" alt="Macarons"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=500&auto=format&fit=crop&q=80" alt="Postre Artesanal"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80" alt="Pastel"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop&q=80" alt="Tartaleta"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&auto=format&fit=crop&q=80" alt="Galletas"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=600&auto=format&fit=crop&q=80" alt="Macarons"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=600&auto=format&fit=crop&q=80" alt="Postre"></div>
       
       <!-- Duplicado obligatorio para efecto infinito -->
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80" alt="Pastel Chocolate"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=500&auto=format&fit=crop&q=80" alt="Tartaleta"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop&q=80" alt="Galletas"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=500&auto=format&fit=crop&q=80" alt="Macarons"></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=500&auto=format&fit=crop&q=80" alt="Postre Artesanal"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80" alt="Pastel"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop&q=80" alt="Tartaleta"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&auto=format&fit=crop&q=80" alt="Galletas"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=600&auto=format&fit=crop&q=80" alt="Macarons"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=600&auto=format&fit=crop&q=80" alt="Postre"></div>
     </div>
   </section>
 
   <main>
-    <!-- CATÁLOGO -->
-    <section id="catalogo">
+    
+    <!-- 1. APARTADO: QUIÉNES SOMOS / HISTORIA -->
+    <section id="historia" class="section-block">
+      <div class="section-header">
+        <h2>Nuestra Historia</h2>
+        <p>Un legado de sabor que pasa de generación en generación</p>
+      </div>
+
+      <div class="history-card">
+        <div class="history-text">
+          <p><strong>Delicias de las Madres</strong> nació como un taller familiar dedicado a preservar las recetas tradicionales horneadas en casa. Lo que comenzó como un pequeño secreto culinario hoy se convierte en una propuesta de repostería de alta calidad.</p>
+          <p>Cada uno de nuestros productos combina procesos artesanales minuciosos con materias primas de primera calidad: mantequilla real, cacao seleccionado y frutas frescas de temporada, sin conservantes ni aditivos artificiales.</p>
+        </div>
+        <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&auto=format&fit=crop&q=80" alt="Horno de Repostería" class="history-img">
+      </div>
+    </section>
+
+    <!-- 📌 FRASE DESTACADA 1 -->
+    <div class="quote-banner">
+      <blockquote>«Un pedazo de pastel no cambia el mundo, pero alegra el momento.»</blockquote>
+      <span>— La Filosofía Dulce</span>
+    </div>
+
+    <!-- 2. APARTADO: VISITA NUESTRO CATÁLOGO -->
+    <section id="catalogo" class="section-block">
+      <div class="section-header">
+        <h2>Nuestro Catálogo</h2>
+        <p>Explora nuestras creaciones elaboradas diariamente</p>
+      </div>
       
-      <h2 class="category-title">🎂 Pasteles & Tartas</h2>
+      <h3 class="category-title">🎂 Pasteles & Tartas Especiales</h3>
       <div class="grid-products">
         
-        <!-- PRODUCTO 1 -->
         <article class="product-card">
           <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80" alt="Pastel Fudge" class="product-img">
           <div class="product-details">
-            <h3 class="product-title">Pastel Fudge de Chocolate</h3>
+            <h4 class="product-title">Pastel Fudge de Chocolate</h4>
             <p class="product-desc">Cacao amargo al 70% relleno de ganache artesanal suave.</p>
             <div class="product-footer">
               <span class="product-price">$380 MXN</span>
@@ -427,12 +577,11 @@
           </div>
         </article>
 
-        <!-- PRODUCTO 2 -->
         <article class="product-card">
           <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop&q=80" alt="Tartaleta" class="product-img">
           <div class="product-details">
-            <h3 class="product-title">Tartaleta de Frutos Rojos</h3>
-            <p class="product-desc">Base crujiente con crema pastelera y frutos frescos.</p>
+            <h4 class="product-title">Tartaleta de Frutos Rojos</h4>
+            <p class="product-desc">Base crujiente con crema pastelera y frutos frescos de temporada.</p>
             <div class="product-footer">
               <span class="product-price">$290 MXN</span>
               <button class="btn-order" onclick="openOrderModal('Tartaleta de Frutos Rojos')">Encargar</button>
@@ -440,19 +589,16 @@
           </div>
         </article>
 
-        <!-- 📌 INSTRUCCIÓN: PARA AÑADIR MÁS PRODUCTOS, COPIA DESDE <article class="product-card"> HASTA </article> Y PÉGALO AQUÍ ABAJO -->
-
       </div>
 
-      <h2 class="category-title">🍪 Galletas & Macarons</h2>
+      <h3 class="category-title">🍪 Galletas & Repostería Fina</h3>
       <div class="grid-products">
         
-        <!-- PRODUCTO 3 -->
         <article class="product-card">
           <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&auto=format&fit=crop&q=80" alt="Galletas" class="product-img">
           <div class="product-details">
-            <h3 class="product-title">Caja de Galletas (12 pzas)</h3>
-            <p class="product-desc">Surtido de chispas de chocolate, avena y nuez.</p>
+            <h4 class="product-title">Caja de Galletas (12 pzas)</h4>
+            <p class="product-desc">Surtido especial con chispas de chocolate, avena y nuez.</p>
             <div class="product-footer">
               <span class="product-price">$180 MXN</span>
               <button class="btn-order" onclick="openOrderModal('Caja de Galletas (12 pzas)')">Encargar</button>
@@ -461,40 +607,60 @@
         </article>
 
       </div>
-
     </section>
 
-    <!-- CONTACTO CON LOGOS OFICIALES (SVG) -->
+    <!-- 📌 FRASE DESTACADA 2 -->
+    <div class="quote-banner">
+      <blockquote>«Horneamos cada receta con el mismo cariño que en casa.»</blockquote>
+      <span>— Calidad Artesanal</span>
+    </div>
+
+    <!-- 3. APARTADO: ENCUÉNTRANOS -->
+    <section id="encuentranos" class="section-block">
+      <div class="section-header">
+        <h2>Encuéntranos</h2>
+        <p>Visita nuestro taller o solicita tu entrega a domicilio</p>
+      </div>
+
+      <div class="location-container">
+        <div class="location-info">
+          <h3>Nuestra Sucursal Principal</h3>
+          <p>📍 <strong>Dirección:</strong> Av. Hidalgo #123, Centro Histórico</p>
+          <p>🕒 <strong>Horario de Atención:</strong> Lunes a Sábado de 8:00 AM a 8:00 PM</p>
+          <p>🚚 <strong>Entregas:</strong> Cobertura en toda la zona metropolitana previa cita.</p>
+        </div>
+        <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.123456789!2d-103.348!3d20.673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDQwJzIyLjgiTiAxMDPCsDIwJzUyLjgiVw!5e0!3m2!1ses!2smx!4v1600000000000!5m2!1ses!2smx" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
     <section id="contacto" class="contact-container">
-      <h2>Contacta con Nosotros</h2>
-      <p style="color: var(--text-muted); margin-top: 0.5rem;">Atendemos pedidos especiales e informes por cualquiera de nuestros canales oficiales.</p>
+      <h2>Canales Directos de Atención</h2>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Atendemos pedidos con 24 horas de anticipación e informes generales.</p>
       
       <div class="contact-buttons">
-        <!-- WHATSAPP -->
         <a href="https://wa.me/521234567890" target="_blank" class="btn-contact btn-whatsapp">
           <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
           WhatsApp
         </a>
 
-        <!-- LLAMADA -->
         <a href="tel:+521234567890" class="btn-contact btn-phone">
           <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1v3.49c0 .55-.45 1-1 1C9.39 21 3 14.61 3 6.5c0-.55.45-1 1-1H7.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
           Llamar
         </a>
 
-        <!-- INSTAGRAM -->
         <a href="https://instagram.com" target="_blank" class="btn-contact btn-instagram">
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           Instagram
         </a>
 
-        <!-- FACEBOOK -->
         <a href="https://facebook.com" target="_blank" class="btn-contact btn-facebook">
           <svg viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.583 9 4.615V8z"/></svg>
           Facebook
         </a>
       </div>
     </section>
+
   </main>
 
   <!-- PIE DE PÁGINA -->
@@ -508,11 +674,11 @@
     </div>
   </footer>
 
-  <!-- MODAL DE ELECCIÓN DE PEDIDO -->
+  <!-- MODAL DE SELECCIÓN DE PEDIDO -->
   <div id="order-modal" class="modal-overlay">
     <div class="modal-card">
       <button class="close-btn" onclick="closeOrderModal()">&times;</button>
-      <h3 style="color: var(--primary);">¿Cómo deseas hacer tu pedido?</h3>
+      <h3 style="color: var(--primary);">¿Cómo deseas realizar tu pedido?</h3>
       <p id="selected-product-name" style="color: var(--text-muted); margin-top: 0.3rem; font-size: 0.95rem;"></p>
       
       <div class="order-options">
@@ -529,15 +695,13 @@
   </div>
 
   <script>
-    const PHONE_NUMBER = "521234567890"; // 📌 CONFIGURA TU NÚMERO AQUÍ (con clave de país)
+    const PHONE_NUMBER = "521234567890"; // 📌 REEMPLAZAR POR TU NÚMERO REAL CON CLAVE DE PAÍS
 
     function openOrderModal(productName) {
       document.getElementById('selected-product-name').innerText = productName;
-      
-      const text = encodeURIComponent(`Hola, quisiera realizar el pedido de: ${productName}`);
+      const text = encodeURIComponent(`Hola, quisiera consultar disponibilidad y ordenar: ${productName}`);
       document.getElementById('opt-whatsapp').href = `https://wa.me/${PHONE_NUMBER}?text=${text}`;
       document.getElementById('opt-phone').href = `tel:+${PHONE_NUMBER}`;
-      
       document.getElementById('order-modal').classList.add('active');
     }
 
@@ -545,36 +709,75 @@
       document.getElementById('order-modal').classList.remove('active');
     }
 
-    /* Abre Políticas y Términos en Pestaña Nueva Independiente */
     function openLegalPage(type) {
       const win = window.open("", "_blank");
-      let title = type === 'privacy' ? 'Política de Privacidad' : 'Términos y Condiciones';
-      let content = type === 'privacy' ? `
-        <h2>Política de Privacidad</h2>
-        <p>En <strong>Delicias de las Madres</strong> nos tomamos muy en serio la seguridad y privacidad de nuestros clientes.</p>
-        <p>1. <strong>Uso de datos:</strong> Los datos recopilados (nombre, teléfono o dirección) son proporcionados voluntariamente por el usuario para la entrega de pedidos.</p>
-        <p>2. <strong>Protección:</strong> No compartimos ni vendemos información personal a ningún tercero.</p>
-      ` : `
-        <h2>Términos y Condiciones de Servicio</h2>
-        <p>1. <strong>Anticipación:</strong> Todos los pedidos deben solicitarse con al menos 24 a 48 horas de anticipación.</p>
-        <p>2. <strong>Envíos:</strong> Los envíos a domicilio pueden generar cargos adicionales según la zona geográfica.</p>
-        <p>3. <strong>Cancelaciones:</strong> Solo se permiten cancelaciones con 24 horas de antelación al día de la entrega.</p>
+      
+      const privacyContent = `
+        <h2>Aviso de Privacidad e Información Legal</h2>
+        <p><strong>Última actualización: Octubre 2026</strong></p>
+        <p>En <strong>Delicias de las Madres</strong>, la confidencialidad, integridad y seguridad de la información personal de nuestros clientes es una prioridad fundamental.</p>
+
+        <h3>1. Identidad del Responsable</h3>
+        <p>La entidad comercial <em>Delicias de las Madres</em>, con domicilio comercial para la gestión de productos de repostería artesanal, es responsable del tratamiento de sus datos personales.</p>
+
+        <h3>2. Datos Personales Recopilados</h3>
+        <p>Los datos recopilados corresponden únicamente a aquellos proporcionados voluntariamente por el usuario vía WhatsApp o llamada telefónica:</p>
+        <ul>
+          <li>Nombre completo del titular del pedido.</li>
+          <li>Número telefónico de contacto.</li>
+          <li>Dirección para entrega a domicilio.</li>
+          <li>Especificaciones e ingredientes para la personalización de productos.</li>
+        </ul>
+
+        <h3>3. Finalidades del Tratamiento de Datos</h3>
+        <ul>
+          <li>Procesamiento, confirmación y elaboración de pedidos.</li>
+          <li>Coordinación de envíos y logística.</li>
+          <li>Atención a consultas y aclaraciones.</li>
+        </ul>
+
+        <h3>4. Protección de Datos</h3>
+        <p><strong>Delicias de las Madres</strong> no vende, alquila ni comparte sus datos personales con terceros bajo ninguna circunstancia.</p>
       `;
+
+      const termsContent = `
+        <h2>Términos y Condiciones Generales de Servicio</h2>
+        <p><strong>Última actualización: Octubre 2026</strong></p>
+        <p>Al navegar en esta plataforma e interactuar con nuestros canales de venta, el usuario acepta de forma íntegra los siguientes términos:</p>
+
+        <h3>1. Proceso de Pedidos y Anticipación</h3>
+        <p>Todo encargo debe realizarse con un mínimo de <strong>24 a 48 horas de anticipación</strong>. Para banquetes o pedidos masivos, la anticipación mínima es de 5 días hábiles.</p>
+
+        <h3>2. Pagos y Cancelaciones</h3>
+        <ul>
+          <li>Las cancelaciones sin penalización deberán notificarse con al menos 24 horas de antelación.</li>
+          <li>Si el producto ya se encuentra en proceso de preparación u horneado, no habrá reembolsos de anticipos.</li>
+        </ul>
+
+        <h3>3. Conservación del Producto</h3>
+        <p>Es responsabilidad del cliente mantener los productos refrigerados según las recomendaciones brindadas al momento de la entrega.</p>
+      `;
+
+      const title = type === 'privacy' ? 'Política de Privacidad — Delicias de las Madres' : 'Términos y Condiciones — Delicias de las Madres';
+      const body = type === 'privacy' ? privacyContent : termsContent;
 
       win.document.write(`
         <!DOCTYPE html>
         <html lang="es">
         <head>
           <meta charset="UTF-8">
-          <title>${title} — Delicias de las Madres</title>
+          <title>${title}</title>
           <style>
-            body { font-family: system-ui, sans-serif; padding: 3rem 1.5rem; max-width: 700px; margin: 0 auto; color: #2C221E; line-height: 1.7; background: #FFFDF9; }
+            body { font-family: system-ui, sans-serif; padding: 3rem 1.5rem; max-width: 800px; margin: 0 auto; color: #2C221E; line-height: 1.7; background: #FFFDF9; }
             h2 { color: #D97757; border-bottom: 2px solid #F4D3C5; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
-            p { margin-bottom: 1rem; color: #555; }
+            h3 { color: #2C221E; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.15rem; }
+            p, ul { margin-bottom: 1rem; color: #555; }
+            ul { margin-left: 1.5rem; }
+            li { margin-bottom: 0.4rem; }
           </style>
         </head>
         <body>
-          ${content}
+          ${body}
         </body>
         </html>
       `);
@@ -582,4 +785,4 @@
     }
   </script>
 </body>
-</html>  
+</html>
