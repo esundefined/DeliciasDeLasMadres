@@ -9,14 +9,14 @@
     :root {
       --bg-main: #FFFDF9;
       --bg-card: #FFFFFF;
-      --primary: #D97757; /* Terracota cálido */
+      --primary: #D97757;
       --primary-hover: #BF5A3B;
-      --secondary: #FDF4EC; /* Crema suave */
+      --secondary: #FDF4EC;
       --accent-pink: #F4D3C5;
       --text-dark: #2C221E;
       --text-muted: #6E635F;
       --border-color: #EFE6DD;
-      --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,22 +26,30 @@
       color: var(--text-dark);
       font-family: var(--font-family);
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* Encabezado Principal */
+    /* Animación de entrada suave */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Encabezado */
     header {
-      background-color: #FFFFFF;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s ease;
     }
 
     .header-container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 1.2rem 1.5rem;
+      padding: 1rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -55,18 +63,23 @@
       color: var(--text-dark);
     }
 
+    /* Logo vectorial provisional o imagen real */
     .logo-img {
       width: 45px;
       height: 45px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--accent-pink);
+      transition: transform 0.3s ease;
+    }
+
+    .logo-link:hover .logo-img {
+      transform: rotate(10deg) scale(1.05);
     }
 
     .brand-name {
       font-size: 1.35rem;
       font-weight: 700;
-      letter-spacing: -0.5px;
       color: var(--primary);
     }
 
@@ -76,38 +89,84 @@
       margin-left: 1.5rem;
       font-weight: 500;
       font-size: 0.95rem;
-      transition: color 0.2s;
+      transition: color 0.2s ease;
     }
 
     nav a:hover { color: var(--primary); }
 
-    /* Hero Banner */
-    .hero {
-      background: linear-gradient(135deg, var(--secondary) 0%, #FFF3EC 100%);
-      padding: 4rem 1.5rem;
-      text-align: center;
+    /* Carrusel Infinito Deslizable con Difuminado */
+    .carousel-section {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      background-color: var(--secondary);
       border-bottom: 1px solid var(--border-color);
     }
 
-    .hero h1 {
-      font-size: 2.6rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 0.8rem;
+    /* Difuminado a los lados */
+    .carousel-section::before,
+    .carousel-section::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 120px;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
     }
 
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.15rem;
-      max-width: 600px;
-      margin: 0 auto;
+    .carousel-section::before {
+      left: 0;
+      background: linear-gradient(to right, var(--bg-main) 0%, transparent 100%);
     }
 
-    /* Contenido de Productos */
+    .carousel-section::after {
+      right: 0;
+      background: linear-gradient(to left, var(--bg-main) 0%, transparent 100%);
+    }
+
+    .carousel-track {
+      display: flex;
+      width: calc(300px * 10);
+      animation: scroll 25s linear infinite;
+    }
+
+    .carousel-track:hover {
+      animation-play-state: paused;
+    }
+
+    .carousel-slide {
+      width: 300px;
+      height: 280px;
+      padding: 10px;
+      flex-shrink: 0;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-slide img:hover {
+      transform: scale(1.03);
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-300px * 5)); }
+    }
+
+    /* Principal */
     main {
       max-width: 1100px;
       margin: 0 auto;
       padding: 3rem 1.5rem;
+      animation: fadeIn 0.8s ease-out;
     }
 
     .category-title {
@@ -116,52 +175,42 @@
       margin: 3rem 0 1.5rem;
       padding-bottom: 0.5rem;
       border-bottom: 2px solid var(--accent-pink);
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
     .grid-products {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 2rem;
     }
 
     .product-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
 
     .product-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(217, 119, 87, 0.12);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(217, 119, 87, 0.15);
     }
 
     .product-img {
       width: 100%;
-      height: 240px;
+      height: 220px;
       object-fit: cover;
+      transition: transform 0.5s ease;
     }
 
-    .product-details {
-      padding: 1.25rem;
+    .product-card:hover .product-img {
+      transform: scale(1.05);
     }
 
-    .product-title {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-
-    .product-desc {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
+    .product-details { padding: 1.25rem; }
+    .product-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .product-desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem; }
 
     .product-footer {
       display: flex;
@@ -171,27 +220,23 @@
       border-top: 1px dashed var(--border-color);
     }
 
-    .product-price {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
+    .product-price { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
 
     .btn-order {
-      background-color: var(--secondary);
-      color: var(--primary);
-      border: 1px solid var(--accent-pink);
-      padding: 0.5rem 1rem;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 0.6rem 1.2rem;
       border-radius: 20px;
-      text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      transition: all 0.2s;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
 
     .btn-order:hover {
-      background-color: var(--primary);
-      color: #FFFFFF;
+      background-color: var(--primary-hover);
+      transform: scale(1.05);
     }
 
     /* Sección de Contacto */
@@ -202,11 +247,6 @@
       padding: 3rem 1.5rem;
       margin-top: 4rem;
       text-align: center;
-    }
-
-    .contact-container h2 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
     }
 
     .contact-buttons {
@@ -220,27 +260,26 @@
     .btn-contact {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 0.85rem 1.6rem;
+      gap: 10px;
+      padding: 0.8rem 1.5rem;
       border-radius: 30px;
       text-decoration: none;
       font-weight: 600;
       font-size: 0.95rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      color: #FFFFFF;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
-    .btn-contact:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    }
+    .btn-contact svg { width: 20px; height: 20px; fill: currentColor; }
+    .btn-contact:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.12); }
 
-    .btn-whatsapp { background-color: #25D366; color: #FFFFFF; }
-    .btn-phone { background-color: var(--primary); color: #FFFFFF; }
-    .btn-instagram { background-color: #E1306C; color: #FFFFFF; }
-    .btn-facebook { background-color: #1877F2; color: #FFFFFF; }
+    .btn-whatsapp { background-color: #25D366; }
+    .btn-phone { background-color: var(--primary); }
+    .btn-instagram { background-color: #E1306C; }
+    .btn-facebook { background-color: #1877F2; }
 
-    /* Pie de Página */
+    /* Pie de página */
     footer {
       background-color: #FFFFFF;
       border-top: 1px solid var(--border-color);
@@ -270,7 +309,7 @@
 
     .legal-links a:hover { text-decoration: underline; }
 
-    /* Estilos del Modal desplegable (Ventana para Políticas) */
+    /* Modal de Selección de Pedido */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -283,63 +322,64 @@
       padding: 1.5rem;
     }
 
-    .modal-overlay.active { display: flex; }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
 
     .modal-card {
       background: #FFFFFF;
       border-radius: 16px;
-      max-width: 650px;
+      max-width: 420px;
       width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
       padding: 2rem;
+      text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       position: relative;
     }
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 1.2rem;
-    }
-
-    .modal-header h2 {
-      font-size: 1.4rem;
-      color: var(--primary);
-    }
-
     .close-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
+      position: absolute;
+      top: 15px; right: 15px;
+      background: none; border: none;
+      font-size: 1.4rem; cursor: pointer;
       color: var(--text-muted);
     }
 
-    .modal-body {
-      color: var(--text-dark);
-      font-size: 0.92rem;
-      line-height: 1.7;
+    .order-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
     }
 
-    .modal-body h4 {
-      margin-top: 1.2rem;
-      margin-bottom: 0.4rem;
-      color: var(--text-dark);
+    .btn-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0.85rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #FFF;
+      transition: transform 0.2s ease;
     }
+
+    .btn-option:hover { transform: scale(1.02); }
+    .btn-option svg { width: 20px; height: 20px; fill: currentColor; }
   </style>
 </head>
 <body>
 
-  <!-- Encabezado con Logo del Negocio -->
+  <!-- ENCABEZADO Y LOGO -->
   <header>
     <div class="header-container">
       <a href="#" class="logo-link">
-        <!-- 📌 CAMBIAR IMAGEN DE LOGO AQUÍ -->
-        <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=150&auto=format&fit=crop&q=80" alt="Logo Delicias de las Madres" class="logo-img">
+        <!-- 📌 ESPACIO PARA TU LOGO REAL: Reemplaza este SVG por: <img src="tu-logo.png" class="logo-img"> -->
+        <svg class="logo-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="#FDF4EC" stroke="#D97757" stroke-width="4"/>
+          <path d="M30 65 C30 50, 70 50, 70 65 Z" fill="#D97757"/>
+          <circle cx="50" cy="40" r="12" fill="#F4D3C5"/>
+          <circle cx="50" cy="25" r="5" fill="#D97757"/>
+        </svg>
         <span class="brand-name">Delicias de las Madres</span>
       </a>
       <nav>
@@ -349,71 +389,73 @@
     </div>
   </header>
 
-  <!-- Banner Hero -->
-  <section class="hero">
-    <h1>Repostería Artesanal & Con Amor</h1>
-    <p>Postres recién horneados cada mañana con recetas tradicionales e ingredientes 100% naturales.</p>
+  <!-- CARRUSEL INFINITO DE FOTOS -->
+  <section class="carousel-section">
+    <div class="carousel-track">
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80" alt="Pastel Chocolate"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=500&auto=format&fit=crop&q=80" alt="Tartaleta"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop&q=80" alt="Galletas"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=500&auto=format&fit=crop&q=80" alt="Macarons"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=500&auto=format&fit=crop&q=80" alt="Postre Artesanal"></div>
+      
+      <!-- Duplicado obligatorio para efecto infinito -->
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80" alt="Pastel Chocolate"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=500&auto=format&fit=crop&q=80" alt="Tartaleta"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop&q=80" alt="Galletas"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=500&auto=format&fit=crop&q=80" alt="Macarons"></div>
+      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=500&auto=format&fit=crop&q=80" alt="Postre Artesanal"></div>
+    </div>
   </section>
 
   <main>
-    <!-- Catálogo de Productos -->
+    <!-- CATÁLOGO -->
     <section id="catalogo">
       
-      <!-- Categoría 1 -->
-      <h2 class="category-title">🎂 Pasteles & Tartas Especiales</h2>
+      <h2 class="category-title">🎂 Pasteles & Tartas</h2>
       <div class="grid-products">
         
+        <!-- PRODUCTO 1 -->
         <article class="product-card">
-          <!-- 📌 CAMBIAR FOTO DE PRODUCTO REAL AQUÍ -->
-          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80" alt="Pastel de Chocolate" class="product-img">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80" alt="Pastel Fudge" class="product-img">
           <div class="product-details">
             <h3 class="product-title">Pastel Fudge de Chocolate</h3>
-            <p class="product-desc">Bizcocho húmedo de cacao amargo al 70% relleno de ganache de chocolate real.</p>
+            <p class="product-desc">Cacao amargo al 70% relleno de ganache artesanal suave.</p>
             <div class="product-footer">
               <span class="product-price">$380 MXN</span>
-              <a href="https://wa.me/521234567890?text=Hola,%20me%20interesa%20encargar%20el%20Pastel%20Fudge%20de%20Chocolate" class="btn-order" target="_blank">Pedir</a>
+              <button class="btn-order" onclick="openOrderModal('Pastel Fudge de Chocolate')">Encargar</button>
             </div>
           </div>
         </article>
 
+        <!-- PRODUCTO 2 -->
         <article class="product-card">
-          <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop&q=80" alt="Tartaleta de Frutas" class="product-img">
+          <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop&q=80" alt="Tartaleta" class="product-img">
           <div class="product-details">
             <h3 class="product-title">Tartaleta de Frutos Rojos</h3>
-            <p class="product-desc">Base crujiente de mantequilla con crema pastelera suave y frutos frescos de temporada.</p>
+            <p class="product-desc">Base crujiente con crema pastelera y frutos frescos.</p>
             <div class="product-footer">
               <span class="product-price">$290 MXN</span>
-              <a href="https://wa.me/521234567890?text=Hola,%20me%20interesa%20encargar%20la%20Tartaleta%20de%20Frutos%20Rojos" class="btn-order" target="_blank">Pedir</a>
+              <button class="btn-order" onclick="openOrderModal('Tartaleta de Frutos Rojos')">Encargar</button>
             </div>
           </div>
         </article>
+
+        <!-- 📌 INSTRUCCIÓN: PARA AÑADIR MÁS PRODUCTOS, COPIA DESDE <article class="product-card"> HASTA </article> Y PÉGALO AQUÍ ABAJO -->
 
       </div>
 
-      <!-- Categoría 2 -->
       <h2 class="category-title">🍪 Galletas & Macarons</h2>
       <div class="grid-products">
         
+        <!-- PRODUCTO 3 -->
         <article class="product-card">
-          <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&auto=format&fit=crop&q=80" alt="Galletas Artesanales" class="product-img">
+          <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&auto=format&fit=crop&q=80" alt="Galletas" class="product-img">
           <div class="product-details">
-            <h3 class="product-title">Caja de Galletas surtidas (12 pzas)</h3>
-            <p class="product-desc">Chispas de chocolate, avena con arándanos y mantequilla estilo neoyorquino.</p>
+            <h3 class="product-title">Caja de Galletas (12 pzas)</h3>
+            <p class="product-desc">Surtido de chispas de chocolate, avena y nuez.</p>
             <div class="product-footer">
               <span class="product-price">$180 MXN</span>
-              <a href="https://wa.me/521234567890?text=Hola,%20me%20interesa%20encargar%20la%20Caja%20de%20Galletas" class="btn-order" target="_blank">Pedir</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=600&auto=format&fit=crop&q=80" alt="Macarons" class="product-img">
-          <div class="product-details">
-            <h3 class="product-title">Colección de Macarons (6 pzas)</h3>
-            <p class="product-desc">Sabores: Pistache, maracuyá, frambuesa, vainilla, café expreso y chocolate.</p>
-            <div class="product-footer">
-              <span class="product-price">$220 MXN</span>
-              <a href="https://wa.me/521234567890?text=Hola,%20me%20interesa%20encargar%20los%20Macarons" class="btn-order" target="_blank">Pedir</a>
+              <button class="btn-order" onclick="openOrderModal('Caja de Galletas (12 pzas)')">Encargar</button>
             </div>
           </div>
         </article>
@@ -422,110 +464,122 @@
 
     </section>
 
-    <!-- Sección de Contacto -->
+    <!-- CONTACTO CON LOGOS OFICIALES (SVG) -->
     <section id="contacto" class="contact-container">
-      <h2>¿Tienes un evento especial o una duda?</h2>
-      <p>Realizamos pedidos personalizados para cumpleaños, reuniones y eventos sociales.</p>
+      <h2>Contacta con Nosotros</h2>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Atendemos pedidos especiales e informes por cualquiera de nuestros canales oficiales.</p>
       
       <div class="contact-buttons">
-        <!-- 📌 CAMBIAR NÚMERO DE WHATSAPP -->
-        <a href="https://wa.me/521234567890?text=Hola,%20quisiera%20solicitar%20información%20para%20un%20pedido" target="_blank" class="btn-contact btn-whatsapp">
-          💬 WhatsApp
+        <!-- WHATSAPP -->
+        <a href="https://wa.me/521234567890" target="_blank" class="btn-contact btn-whatsapp">
+          <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          WhatsApp
         </a>
-        <!-- 📌 CAMBIAR TELÉFONO -->
+
+        <!-- LLAMADA -->
         <a href="tel:+521234567890" class="btn-contact btn-phone">
-          📞 Llamar
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1v3.49c0 .55-.45 1-1 1C9.39 21 3 14.61 3 6.5c0-.55.45-1 1-1H7.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          Llamar
         </a>
-        <!-- 📌 CAMBIAR ENLACE DE INSTAGRAM -->
-        <a href="https://instagram.com/" target="_blank" class="btn-contact btn-instagram">
-          📸 Instagram
+
+        <!-- INSTAGRAM -->
+        <a href="https://instagram.com" target="_blank" class="btn-contact btn-instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram
         </a>
-        <!-- 📌 CAMBIAR ENLACE DE FACEBOOK -->
-        <a href="https://facebook.com/" target="_blank" class="btn-contact btn-facebook">
-          📘 Facebook
+
+        <!-- FACEBOOK -->
+        <a href="https://facebook.com" target="_blank" class="btn-contact btn-facebook">
+          <svg viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.583 9 4.615V8z"/></svg>
+          Facebook
         </a>
       </div>
     </section>
   </main>
 
-  <!-- Pie de página -->
+  <!-- PIE DE PÁGINA -->
   <footer>
     <div class="footer-content">
       <div>© 2026 Delicias de las Madres. Todos los derechos reservados.</div>
       <div class="legal-links">
-        <a onclick="toggleModal('modal-privacy', true)">Política de Privacidad</a>
-        <a onclick="toggleModal('modal-terms', true)">Términos y Condiciones</a>
+        <a onclick="openLegalPage('privacy')">Política de Privacidad</a>
+        <a onclick="openLegalPage('terms')">Términos y Condiciones</a>
       </div>
     </div>
   </footer>
 
-  <!-- MODAL: POLÍTICA DE PRIVACIDAD COMPLETA -->
-  <div id="modal-privacy" class="modal-overlay">
+  <!-- MODAL DE ELECCIÓN DE PEDIDO -->
+  <div id="order-modal" class="modal-overlay">
     <div class="modal-card">
-      <div class="modal-header">
-        <h2>Política de Privacidad</h2>
-        <button class="close-btn" onclick="toggleModal('modal-privacy', false)">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p>En <strong>Delicias de las Madres</strong> valoramos y respetamos la privacidad de nuestros clientes. Esta política detalla cómo manejamos la información cuando interactúas con nuestra tienda web:</p>
-        
-        <h4>1. Recopilación de Datos</h4>
-        <p>No recopilamos información personal de forma automática a través de esta página web sin tu conocimiento. Los únicos datos que recibimos (como tu nombre, dirección de entrega o teléfono) son los que tú nos proporcionas voluntariamente al contactarnos vía WhatsApp o llamada telefónica.</p>
-
-        <h4>2. Uso de la Información</h4>
-        <p>La información compartida se utiliza exclusivamente para coordinar la preparación, personalización, cobro y entrega a domicilio de tus pedidos de repostería.</p>
-
-        <h4>3. Protección de Datos</h4>
-        <p>Garantizamos que tus datos personales no serán vendidos, alquilados ni transferidos a terceras personas bajo ninguna circunstancia sin tu consentimiento expreso.</p>
-
-        <h4>4. Contacto</h4>
-        <p>Si deseas corregir, actualizar o solicitar la eliminación de tus datos de nuestra agenda de clientes, puedes comunicarte directamente a través de nuestro número oficial de WhatsApp.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: TÉRMINOS Y CONDICIONES COMPLETOS -->
-  <div id="modal-terms" class="modal-overlay">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2>Términos y Condiciones de Servicio</h2>
-        <button class="close-btn" onclick="toggleModal('modal-terms', false)">&times;</button>
-      </div>
-      <div class="modal-body">
-        <h4>1. Encargos y Anticipación</h4>
-        <p>Todos nuestros postres se preparan artesanalmente al momento. Recomendamos realizar tus pedidos con un mínimo de <strong>24 a 48 horas de anticipación</strong>. Para pedidos especiales de eventos masivos, sugerimos 5 días de anticipación.</p>
-
-        <h4>2. Entregas y Envíos</h4>
-        <p>Ofrecemos servicio de entrega a domicilio con un costo adicional sujeto a la zona geográfica. El cliente también puede optar por recoger su pedido en nuestro punto oficial de entrega sin costo adicional.</p>
-
-        <h4>3. Cambios y Cancelaciones</h4>
-        <p>Cualquier cambio o cancelación en el pedido debe notificarse con un mínimo de 24 horas antes de la hora programada de entrega. Una vez iniciado el proceso de elaboración del producto, no se realizarán reembolsos.</p>
-
-        <h4>4. Conservación del Producto</h4>
-        <p>Debido a la frescura de nuestros ingredientes y la ausencia de conservadores artificiales, los pasteles y postres refrigerados deben mantenerse en frío hasta el momento de consumo para conservar su sabor y estructura óptima.</p>
+      <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+      <h3 style="color: var(--primary);">¿Cómo deseas hacer tu pedido?</h3>
+      <p id="selected-product-name" style="color: var(--text-muted); margin-top: 0.3rem; font-size: 0.95rem;"></p>
+      
+      <div class="order-options">
+        <a id="opt-whatsapp" href="#" target="_blank" class="btn-option btn-whatsapp">
+          <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Pedir por WhatsApp
+        </a>
+        <a id="opt-phone" href="#" class="btn-option btn-phone">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1v3.49c0 .55-.45 1-1 1C9.39 21 3 14.61 3 6.5c0-.55.45-1 1-1H7.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          Pedir por Llamada
+        </a>
       </div>
     </div>
   </div>
 
   <script>
-    function toggleModal(modalId, show) {
-      const modal = document.getElementById(modalId);
-      if (show) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      } else {
-        modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      }
+    const PHONE_NUMBER = "521234567890"; // 📌 CONFIGURA TU NÚMERO AQUÍ (con clave de país)
+
+    function openOrderModal(productName) {
+      document.getElementById('selected-product-name').innerText = productName;
+      
+      const text = encodeURIComponent(`Hola, quisiera realizar el pedido de: ${productName}`);
+      document.getElementById('opt-whatsapp').href = `https://wa.me/${PHONE_NUMBER}?text=${text}`;
+      document.getElementById('opt-phone').href = `tel:+${PHONE_NUMBER}`;
+      
+      document.getElementById('order-modal').classList.add('active');
     }
 
-    // Cerrar modal al hacer clic fuera del recuadro
-    window.onclick = function(event) {
-      if (event.target.classList.contains('modal-overlay')) {
-        event.target.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      }
-    };
+    function closeOrderModal() {
+      document.getElementById('order-modal').classList.remove('active');
+    }
+
+    /* Abre Políticas y Términos en Pestaña Nueva Independiente */
+    function openLegalPage(type) {
+      const win = window.open("", "_blank");
+      let title = type === 'privacy' ? 'Política de Privacidad' : 'Términos y Condiciones';
+      let content = type === 'privacy' ? `
+        <h2>Política de Privacidad</h2>
+        <p>En <strong>Delicias de las Madres</strong> nos tomamos muy en serio la seguridad y privacidad de nuestros clientes.</p>
+        <p>1. <strong>Uso de datos:</strong> Los datos recopilados (nombre, teléfono o dirección) son proporcionados voluntariamente por el usuario para la entrega de pedidos.</p>
+        <p>2. <strong>Protección:</strong> No compartimos ni vendemos información personal a ningún tercero.</p>
+      ` : `
+        <h2>Términos y Condiciones de Servicio</h2>
+        <p>1. <strong>Anticipación:</strong> Todos los pedidos deben solicitarse con al menos 24 a 48 horas de anticipación.</p>
+        <p>2. <strong>Envíos:</strong> Los envíos a domicilio pueden generar cargos adicionales según la zona geográfica.</p>
+        <p>3. <strong>Cancelaciones:</strong> Solo se permiten cancelaciones con 24 horas de antelación al día de la entrega.</p>
+      `;
+
+      win.document.write(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>${title} — Delicias de las Madres</title>
+          <style>
+            body { font-family: system-ui, sans-serif; padding: 3rem 1.5rem; max-width: 700px; margin: 0 auto; color: #2C221E; line-height: 1.7; background: #FFFDF9; }
+            h2 { color: #D97757; border-bottom: 2px solid #F4D3C5; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+            p { margin-bottom: 1rem; color: #555; }
+          </style>
+        </head>
+        <body>
+          ${content}
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
   </script>
 </body>
 </html>
